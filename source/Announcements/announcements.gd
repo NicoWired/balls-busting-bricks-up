@@ -1,8 +1,7 @@
 class_name Announcements
 extends CanvasLayer
 
-@onready var label: Label = $CenterContainer/Label
-
+@onready var main_label: Label = $LabelsContainer/MainLabel
 
 func set_label(message: String) -> void:
-	label.text = message
+	main_label.text = message

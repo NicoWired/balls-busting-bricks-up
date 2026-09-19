@@ -16,19 +16,26 @@ var ball: Ball
 @onready var death_area: Area2D = $DeathArea
 
 func _ready() -> void:
-	setup_bricks()
-	setup_paddle()
+	paddle = preload("res://source/paddle/paddle.tscn").instantiate()
+	add_child(paddle)
 	setup_walls()
-	setup_ball()
 	setup_death()
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("start"):
-		if ball.on_hold:
-			ball.on_hold = false
+#func _process(_delta: float) -> void:
+	#if Input.is_action_just_pressed("start"):
+		#if ball.on_hold:
+			#ball.on_hold = false
 
 #region setup
+func setup_board():
+	setup_bricks()
+	setup_paddle()
+	setup_ball()
+
 func setup_bricks() -> void:
+	for brick in bricks.get_children():
+		brick.queue_free()
+	
 	var brick_pos: Vector2i = Vector2i.ZERO
 	brick_pos.y += BRICK_Y_OFFSET
 	for y in range(1, BRICK_LAYOUT.y +1):
@@ -48,9 +55,7 @@ func setup_bricks() -> void:
 		brick_pos.y = (y * Brick.SIZE.y) + BRICK_Y_OFFSET
 
 func setup_paddle() -> void:
-	paddle = preload("res://source/paddle/paddle.tscn").instantiate()
 	paddle.position = PADDLE_START_POS
-	add_child(paddle)
 
 func setup_walls() -> void:
 	var left_wall: Wall = preload("res://source/walls/wall.tscn").instantiate()
@@ -69,18 +74,22 @@ func setup_walls() -> void:
 
 func setup_ball() -> void:
 	ball = preload("res://source/ball/Ball.tscn").instantiate()
+	ball.global_position = paddle.ball_spawn.global_position
 	ball.hold_position = paddle.ball_spawn
 	add_child(ball)
 
 func setup_death() -> void:
 	death_area.body_entered.connect(_on_death_area_entered)
-#endregion setuph
 
 func reset_ball() -> void:
-	paddle.queue_free()
 	ball.queue_free()
 	call_deferred("setup_paddle")
 	call_deferred("setup_ball")
+#endregion setuph
+
+func space_pressed() -> void:
+	if ball.on_hold:
+		ball.on_hold = false
 
 func _on_brick_hit(hit_brick: Brick) -> void:
 	score_increase.emit(hit_brick.points)
@@ -91,6 +100,5 @@ func _on_death_area_entered(body) -> void:
 		life_lost.emit()
 
 func _on_brick_exited() -> void:
-	print(len(bricks.get_children()))
 	if len(bricks.get_children()) == 0:
 		no_bricks_left.emit()

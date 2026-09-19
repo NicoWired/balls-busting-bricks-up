@@ -9,6 +9,7 @@
 script = ExtResource("1_1mekw")
 
 [node name="Board" parent="." unique_id=9078615 instance=ExtResource("2_sy5cy")]
+process_mode = 1
 
 [node name="HUD" parent="." unique_id=135443943 instance=ExtResource("3_y8xxq")]
 
