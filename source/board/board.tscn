@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dl12thkaio6ei"]
+
+[ext_resource type="Script" uid="uid://b7hu304m2hcce" path="res://source/board/board.gd" id="1_7voth"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_evpsf"]
+size = Vector2(178, 20)
+
+[node name="Board" type="CanvasLayer" unique_id=9078615]
+script = ExtResource("1_7voth")
+
+[node name="Backgroud" type="ColorRect" parent="." unique_id=1718369229]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.19607843, 0.19215687, 0.23137255, 1)
+
+[node name="Bricks" type="Node2D" parent="." unique_id=86853612]
+
+[node name="DeathArea" type="Area2D" parent="." unique_id=1365013433]
+collision_layer = 16
+
+[node name="DeathCollision" type="CollisionShape2D" parent="DeathArea" unique_id=1115237664]
+position = Vector2(79, 294)
+shape = SubResource("RectangleShape2D_evpsf")

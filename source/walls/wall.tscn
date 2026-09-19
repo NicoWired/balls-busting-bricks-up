@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://ms8l851ro4ws"]
+
+[ext_resource type="Script" uid="uid://d33l6bpji51rc" path="res://source/walls/wall.gd" id="1_4mkjd"]
+
+[node name="Wall" type="StaticBody2D" unique_id=1585168249]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_4mkjd")
+
+[node name="WallShape" type="CollisionShape2D" parent="." unique_id=1375739922]

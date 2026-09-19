@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bvnlkf8deopah"]
+
+[ext_resource type="Script" uid="uid://bmorlkhq0ngy0" path="res://source/paddle/paddle.gd" id="1_0nd7t"]
+[ext_resource type="Texture2D" uid="uid://58m7puwg04qk" path="res://assets/paddle/paddle_left.png" id="1_gy37t"]
+[ext_resource type="Texture2D" uid="uid://bt5whearv87f4" path="res://assets/paddle/paddle_center.png" id="2_0nd7t"]
+[ext_resource type="Texture2D" uid="uid://dt3vmwire0yrp" path="res://assets/paddle/paddle_rightt.png" id="3_sxc3n"]
+
+[node name="Paddle" type="CharacterBody2D" unique_id=296366317]
+collision_layer = 2
+collision_mask = 9
+motion_mode = 1
+script = ExtResource("1_0nd7t")
+
+[node name="PaddleLeft" type="Sprite2D" parent="." unique_id=630225733]
+texture = ExtResource("1_gy37t")
+centered = false
+
+[node name="PaddleMid" type="Sprite2D" parent="." unique_id=1239904761]
+texture = ExtResource("2_0nd7t")
+centered = false
+
+[node name="PaddleRight" type="Sprite2D" parent="." unique_id=2065188736]
+texture = ExtResource("3_sxc3n")
+centered = false
+
+[node name="PaddleCollision" type="CollisionShape2D" parent="." unique_id=826799588]
+
+[node name="BallSpawn" type="Marker2D" parent="." unique_id=103863131]

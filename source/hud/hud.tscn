@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://5al56y78mq1y"]
+
+[ext_resource type="Script" uid="uid://dc5byf7fnm8yo" path="res://source/hud/hud.gd" id="1_kokgg"]
+
+[node name="HUD" type="CanvasLayer" unique_id=135443943]
+script = ExtResource("1_kokgg")
+
+[node name="HUDContainer" type="MarginContainer" parent="." unique_id=598560848]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="FullContainer" type="VBoxContainer" parent="HUDContainer" unique_id=1632574585]
+layout_mode = 2
+
+[node name="TopContainer" type="HBoxContainer" parent="HUDContainer/FullContainer" unique_id=231342771]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="HUDContainer/FullContainer/TopContainer" unique_id=1744409048]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1234"
+horizontal_alignment = 1
+
+[node name="Lives" type="Label" parent="HUDContainer/FullContainer/TopContainer" unique_id=1663652448]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+horizontal_alignment = 1

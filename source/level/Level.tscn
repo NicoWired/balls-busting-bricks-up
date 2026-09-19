@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bq8i3pq2aaqym"]
+
+[ext_resource type="Script" uid="uid://bmwbjy21x34pi" path="res://source/level/level.gd" id="1_1mekw"]
+[ext_resource type="PackedScene" uid="uid://dl12thkaio6ei" path="res://source/board/board.tscn" id="2_sy5cy"]
+[ext_resource type="PackedScene" uid="uid://csa6hd3rvbddo" path="res://source/Announcements/announcements.tscn" id="3_v01u8"]
+[ext_resource type="PackedScene" uid="uid://5al56y78mq1y" path="res://source/hud/hud.tscn" id="3_y8xxq"]
+
+[node name="Level" type="Node" unique_id=1162867290]
+script = ExtResource("1_1mekw")
+
+[node name="Board" parent="." unique_id=9078615 instance=ExtResource("2_sy5cy")]
+
+[node name="HUD" parent="." unique_id=135443943 instance=ExtResource("3_y8xxq")]
+
+[node name="Announcements" parent="." unique_id=105652722 instance=ExtResource("3_v01u8")]
+visible = false
+
+[node name="Menu" type="CanvasLayer" parent="." unique_id=181925971]
