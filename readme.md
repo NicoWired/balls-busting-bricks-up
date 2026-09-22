@@ -44,7 +44,4 @@ I may or may not implement some of these improvements in the future.
 ## Assets Used
 All art made by me (if we can call it art), based on the [Chasm palette](https://lospec.com/palette-list/chasm) found on lospec.com.
 
-Kenney Pico-8 Platformer
-- Author: Kenney
-- Source: https://www.kenney.nl/assets/pico-8-platformer
-- License: https://creativecommons.org/publicdomain/zero/1.0/
+Font: [Home Bideo Font](https://ggbot.itch.io/home-video-font)
