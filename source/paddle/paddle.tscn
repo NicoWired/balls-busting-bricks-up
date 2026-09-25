@@ -23,6 +23,13 @@ centered = false
 texture = ExtResource("3_sxc3n")
 centered = false
 
-[node name="PaddleCollision" type="CollisionShape2D" parent="." unique_id=826799588]
+[node name="CentralCollision" type="CollisionShape2D" parent="." unique_id=826799588]
+
+[node name="LeftCollision" type="CollisionShape2D" parent="." unique_id=1618043129]
+
+[node name="RightCollision" type="CollisionShape2D" parent="." unique_id=1744710960]
 
 [node name="BallSpawn" type="Marker2D" parent="." unique_id=103863131]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=562728500]
+zoom = Vector2(3, 3)

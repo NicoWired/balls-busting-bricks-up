@@ -10,8 +10,11 @@ const BALL_Y_OFFSET = -6
 @onready var paddle_left: Sprite2D = $PaddleLeft
 @onready var paddle_mid: Sprite2D = $PaddleMid
 @onready var paddle_right: Sprite2D = $PaddleRight
-@onready var paddle_collision: CollisionShape2D = $PaddleCollision
+@onready var central_collision: CollisionShape2D = $CentralCollision
+@onready var left_collision: CollisionShape2D = $LeftCollision
+@onready var right_collision: CollisionShape2D = $RightCollision
 @onready var ball_spawn: Marker2D = $BallSpawn
+
 
 
 func _ready() -> void:
@@ -31,7 +34,6 @@ func align_paddle() -> void:
 	paddle_left.position.y = 0
 	paddle_mid.position.y = 0
 	paddle_right.position.y = 0
-	paddle_collision.position.y = 0
 
 	# calculate the horizontal position of each piece based on the scale of the center piece
 	@warning_ignore("integer_division")
@@ -41,12 +43,30 @@ func align_paddle() -> void:
 	paddle_mid.position.x = (half_mid_paddle) * -1
 	paddle_right.position.x = half_mid_paddle
 	
-	# update the collider to match the paddle
-	var collider: RectangleShape2D = RectangleShape2D.new()
-	collider.size = Vector2(paddle_left.texture.get_size().x + paddle_right.texture.get_size().x + paddle_mid.texture.get_size().x * paddle_mid.scale.x, HEIGHT)
-	paddle_collision.shape = collider
+	# update the cntral collider to match the paddle
+	var central_collider: RectangleShape2D = RectangleShape2D.new()
+	central_collider.size = Vector2(paddle_mid.texture.get_size().x * paddle_mid.scale.x, HEIGHT)
+	central_collision.shape = central_collider
 	@warning_ignore("integer_division")
-	paddle_collision.position.y += HEIGHT / 2
+	central_collision.position.y = HEIGHT / 2
+	
+	# update the left collider to match the paddle
+	var left_collider: CircleShape2D = CircleShape2D.new()
+	@warning_ignore("integer_division")
+	left_collider.radius = HEIGHT / 2
+	left_collision.shape = left_collider
+	@warning_ignore("integer_division")
+	left_collision.position.y = HEIGHT / 2
+	left_collision.position.x -= central_collider.size.x / 2
+	
+	# yes, this and the block above should be a function
+	var right_collider: CircleShape2D = CircleShape2D.new()
+	@warning_ignore("integer_division")
+	right_collider.radius = HEIGHT / 2
+	right_collision.shape = left_collider
+	@warning_ignore("integer_division")
+	right_collision.position.y = HEIGHT / 2
+	right_collision.position.x += central_collider.size.x / 2
 	
 	# update the ball spawn marker
 	ball_spawn.position.y = BALL_Y_OFFSET
