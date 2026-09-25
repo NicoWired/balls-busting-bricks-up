@@ -4,7 +4,7 @@ extends CharacterBody2D
 const SIDE_X: int = 4
 const MID_X: int = 8
 const HEIGHT: int = 6
-const SPEED: int = 6000
+const SPEED: int = 200
 const BALL_Y_OFFSET = -6
 
 @onready var paddle_left: Sprite2D = $PaddleLeft
@@ -20,11 +20,11 @@ const BALL_Y_OFFSET = -6
 func _ready() -> void:
 	change_paddle_size(3)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if Input.is_action_pressed("left"):
-		velocity.x = SPEED * delta * -1
+		velocity.x = SPEED * -1
 	elif Input.is_action_pressed("right"):
-		velocity.x = SPEED * delta
+		velocity.x = SPEED
 	else:
 		velocity.x = 0
 	velocity.y = 0
