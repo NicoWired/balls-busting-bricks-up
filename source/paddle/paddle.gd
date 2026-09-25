@@ -27,6 +27,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = SPEED * delta
 	else:
 		velocity.x = 0
+	velocity.y = 0
 	move_and_slide()
 
 func align_paddle() -> void:
@@ -63,7 +64,7 @@ func align_paddle() -> void:
 	var right_collider: CircleShape2D = CircleShape2D.new()
 	@warning_ignore("integer_division")
 	right_collider.radius = HEIGHT / 2
-	right_collision.shape = left_collider
+	right_collision.shape = right_collider
 	@warning_ignore("integer_division")
 	right_collision.position.y = HEIGHT / 2
 	right_collision.position.x += central_collider.size.x / 2
