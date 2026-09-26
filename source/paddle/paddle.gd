@@ -16,7 +16,6 @@ const BALL_Y_OFFSET = -6
 @onready var ball_spawn: Marker2D = $BallSpawn
 
 
-
 func _ready() -> void:
 	change_paddle_size(3)
 
