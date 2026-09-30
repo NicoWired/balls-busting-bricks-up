@@ -13,6 +13,7 @@ var paddle: Paddle
 var ball: Ball
 
 @onready var bricks: Node2D = $Bricks
+@onready var balls: Node2D = $Balls
 @onready var death_area: Area2D = $DeathArea
 
 func _ready() -> void:
@@ -73,10 +74,12 @@ func setup_walls() -> void:
 	ceiling.set_shape(Vector2i.ZERO, Vector2i(window_size.x, 0))
 
 func setup_ball() -> void:
+	for child in balls.get_children():
+		child.queue_free()
 	ball = preload("res://source/ball/Ball.tscn").instantiate()
 	ball.global_position = paddle.ball_spawn.global_position
 	ball.hold_position = paddle.ball_spawn
-	add_child(ball)
+	balls.add_child(ball)
 
 func setup_death() -> void:
 	death_area.body_entered.connect(_on_death_area_entered)

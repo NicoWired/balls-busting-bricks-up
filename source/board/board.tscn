@@ -18,6 +18,8 @@ color = Color(0.19607843, 0.19215687, 0.23137255, 1)
 
 [node name="Bricks" type="Node2D" parent="." unique_id=86853612]
 
+[node name="Balls" type="Node2D" parent="." unique_id=2092679488]
+
 [node name="DeathArea" type="Area2D" parent="." unique_id=1365013433]
 collision_layer = 16
 

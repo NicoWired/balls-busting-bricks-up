@@ -3,8 +3,9 @@ extends Node
 
 const MAX_LIFE: int = 3
 
-var life: int
+var life: int = MAX_LIFE
 var awaiting_restart: bool = false
+var current_level: int = 0
 
 var score: int = 0:
 	set(value):
@@ -34,15 +35,18 @@ func _process(_delta: float) -> void:
 			restart_level()
 		else:
 			board.space_pressed()
+	if Input.is_action_just_pressed("debug"):
+		_on_no_bricks_left()
 
 func start_level() -> void:
-	life = MAX_LIFE
-	score = 0
+	current_level += 1
 	board.setup_board()
 	hud.set_life(life)
 	hud.set_score(score)
 
 func restart_level() -> void:
+	life = MAX_LIFE
+	score = 0
 	get_tree().paused = false
 	announcements.visible = false
 	awaiting_restart = false
@@ -60,14 +64,9 @@ func _on_score_increase(points: int) -> void:
 	score += points
 
 func _on_no_bricks_left() -> void:
-	awaiting_restart = true
-	set_announcement("YOU WIN")
+	restart_level()
+	announcements.next_level(current_level)
 
 func game_over() -> void:
 	awaiting_restart = true
-	set_announcement("GAME OVER")
-
-func set_announcement(message: String) -> void:
-	announcements.visible = true
-	get_tree().paused = true
-	announcements.set_label(message)
+	announcements.game_over()

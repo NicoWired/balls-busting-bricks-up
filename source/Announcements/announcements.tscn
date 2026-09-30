@@ -20,7 +20,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="LabelsContainer" unique_id=1200492081]
+[node name="TopLabel" type="Label" parent="LabelsContainer" unique_id=1200492081]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_alignment = 1
@@ -35,7 +35,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="ContinueLabel" type="Label" parent="LabelsContainer" unique_id=1763153624]
+[node name="BottomLabel" type="Label" parent="LabelsContainer" unique_id=1763153624]
 layout_mode = 2
 size_flags_vertical = 3
 text = "PRESS SPACE TO PLAY AGAIN"
