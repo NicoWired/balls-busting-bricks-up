@@ -23,6 +23,7 @@ func _ready() -> void:
 	board.no_bricks_left.connect(_on_no_bricks_left)
 	board.score_increase.connect(_on_score_increase)
 	start_level()
+	announcements.next_level(current_level)
 
 
 func _process(_delta: float) -> void:
@@ -35,7 +36,7 @@ func _process(_delta: float) -> void:
 			restart_level()
 		else:
 			board.space_pressed()
-	if Input.is_action_just_pressed("debug"):
+	if Input.is_action_just_pressed("debug") and OS.is_debug_build():
 		_on_no_bricks_left()
 
 func start_level() -> void:
@@ -45,8 +46,6 @@ func start_level() -> void:
 	hud.set_score(score)
 
 func restart_level() -> void:
-	life = MAX_LIFE
-	score = 0
 	get_tree().paused = false
 	announcements.visible = false
 	awaiting_restart = false
@@ -69,4 +68,9 @@ func _on_no_bricks_left() -> void:
 
 func game_over() -> void:
 	awaiting_restart = true
+	life = MAX_LIFE
+	score = 0
+	current_level = 0
 	announcements.game_over()
+
+# level up resets lives
