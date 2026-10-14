@@ -82,10 +82,13 @@ func setup_ball(on_hold: bool = true) -> void:
 	for child in balls.get_children():
 		child.queue_free()
 	ball = preload("res://source/ball/Ball.tscn").instantiate()
-	ball.global_position = paddle.ball_spawn.global_position
-	ball.hold_position = paddle.ball_spawn
-	ball.on_hold = on_hold
-	balls.add_child(ball)
+	config_ball(ball, on_hold)
+	
+func config_ball(new_ball: Ball, on_hold: bool) -> void:
+	new_ball.global_position = paddle.ball_spawn.global_position
+	new_ball.hold_position = paddle.ball_spawn
+	new_ball.on_hold = on_hold
+	balls.call_deferred("add_child", new_ball)
 
 func setup_death() -> void:
 	death_area.body_entered.connect(_on_death_area_entered)
@@ -98,10 +101,7 @@ func reset_ball() -> void:
 
 func multiball(on_hold: bool = true) -> void:
 	var new_ball = preload("res://source/ball/Ball.tscn").instantiate()
-	new_ball.global_position = paddle.ball_spawn.global_position
-	new_ball.hold_position = paddle.ball_spawn
-	new_ball.on_hold = false
-	balls.call_deferred("add_child", new_ball) # why is call_deferred needed??
+	config_ball(new_ball, on_hold)
 
 func space_pressed() -> void:
 	if ball.on_hold:
