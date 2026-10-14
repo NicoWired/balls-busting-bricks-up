@@ -33,3 +33,7 @@ centered = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=562728500]
 zoom = Vector2(3, 3)
+
+[node name="Area" type="Area2D" parent="." unique_id=865372714]
+collision_layer = 2
+collision_mask = 32

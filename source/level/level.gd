@@ -3,9 +3,13 @@ extends Node
 
 const MAX_LIFE: int = 3
 
-var life: int = MAX_LIFE
 var awaiting_restart: bool = false
 var current_level: int = 0
+
+var life: int = MAX_LIFE:
+	set(value):
+		life = value
+		hud.set_life(life)
 
 var score: int = 0:
 	set(value):
@@ -20,6 +24,7 @@ var score: int = 0:
 
 func _ready() -> void:
 	board.life_lost.connect(_on_life_lost)
+	board.life_gained.connect(func(): life += 1)
 	board.no_bricks_left.connect(_on_no_bricks_left)
 	board.score_increase.connect(_on_score_increase)
 	start_level()
@@ -52,6 +57,7 @@ func restart_level() -> void:
 	start_level()
 
 func _on_life_lost() -> void:
+	board.cleanup_powerups()
 	if life > 0:
 		life -= 1
 		hud.set_life(life)

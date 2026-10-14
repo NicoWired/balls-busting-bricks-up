@@ -2,6 +2,7 @@ class_name Board
 extends CanvasLayer
 
 signal life_lost
+signal life_gained
 signal no_bricks_left
 signal score_increase
 
@@ -15,6 +16,8 @@ var ball: Ball
 @onready var bricks: Node2D = $Bricks
 @onready var balls: Node2D = $Balls
 @onready var death_area: Area2D = $DeathArea
+@onready var power_ups: Node2D = $PowerUps
+
 
 func _ready() -> void:
 	paddle = preload("res://source/paddle/paddle.tscn").instantiate()
@@ -22,16 +25,16 @@ func _ready() -> void:
 	setup_walls()
 	setup_death()
 
-#func _process(_delta: float) -> void:
-	#if Input.is_action_just_pressed("start"):
-		#if ball.on_hold:
-			#ball.on_hold = false
-
 #region setup
 func setup_board():
 	setup_bricks()
 	setup_paddle()
 	setup_ball()
+	cleanup_powerups()
+
+func cleanup_powerups() -> void:
+	for child in power_ups.get_children():
+		child.queue_free()
 
 func setup_bricks() -> void:
 	for brick in bricks.get_children():
@@ -57,6 +60,8 @@ func setup_bricks() -> void:
 
 func setup_paddle() -> void:
 	paddle.position = PADDLE_START_POS
+	paddle.extralife.connect(func(): life_gained.emit())
+	paddle.multiball.connect(func(): multiball(false))
 
 func setup_walls() -> void:
 	var left_wall: Wall = preload("res://source/walls/wall.tscn").instantiate()
@@ -73,12 +78,13 @@ func setup_walls() -> void:
 	right_wall.set_shape(Vector2i(window_size.x, 0), window_size)
 	ceiling.set_shape(Vector2i.ZERO, Vector2i(window_size.x, 0))
 
-func setup_ball() -> void:
+func setup_ball(on_hold: bool = true) -> void:
 	for child in balls.get_children():
 		child.queue_free()
 	ball = preload("res://source/ball/Ball.tscn").instantiate()
 	ball.global_position = paddle.ball_spawn.global_position
 	ball.hold_position = paddle.ball_spawn
+	ball.on_hold = on_hold
 	balls.add_child(ball)
 
 func setup_death() -> void:
@@ -90,16 +96,32 @@ func reset_ball() -> void:
 	call_deferred("setup_ball")
 #endregion setuph
 
+func multiball(on_hold: bool = true) -> void:
+	var new_ball = preload("res://source/ball/Ball.tscn").instantiate()
+	new_ball.global_position = paddle.ball_spawn.global_position
+	new_ball.hold_position = paddle.ball_spawn
+	new_ball.on_hold = false
+	balls.call_deferred("add_child", new_ball) # why is call_deferred needed??
+
 func space_pressed() -> void:
 	if ball.on_hold:
 		ball.on_hold = false
 
 func _on_brick_hit(hit_brick: Brick) -> void:
+	var powerup: PowerUp = preload("res://source/Powerups/Powerup.tscn").instantiate()
+	powerup.global_position = hit_brick.global_position
+	power_ups.add_child(powerup)
+	
 	score_increase.emit(hit_brick.points)
+	
 	hit_brick.queue_free()
 
 func _on_death_area_entered(body) -> void:
 	if body is Ball:
+		body.dead = true
+		for remaining_ball: Ball in balls.get_children():
+			if not remaining_ball.dead:
+				return
 		life_lost.emit()
 
 func _on_brick_exited() -> void:

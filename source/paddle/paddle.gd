@@ -1,6 +1,9 @@
 class_name Paddle
 extends CharacterBody2D
 
+signal extralife
+signal multiball
+
 const SIDE_X: int = 4
 const MID_X: int = 8
 const HEIGHT: int = 6
@@ -14,6 +17,8 @@ const BALL_Y_OFFSET = -6
 @onready var left_collision: CollisionShape2D = $LeftCollision
 @onready var right_collision: CollisionShape2D = $RightCollision
 @onready var ball_spawn: Marker2D = $BallSpawn
+@onready var area: Area2D = $Area
+
 
 
 func _ready() -> void:
@@ -76,3 +81,25 @@ func align_paddle() -> void:
 func change_paddle_size(factor: int) -> void:
 	paddle_mid.scale.x = factor
 	align_paddle()
+	setup_area()
+
+func setup_area() -> void:
+	area.area_entered.connect(_on_area_enterd)
+	area.add_child(right_collision.duplicate())
+	area.add_child(central_collision.duplicate())
+	area.add_child(left_collision.duplicate())
+
+func _on_area_enterd(foreign_area) -> void:
+	if foreign_area is PowerUp:
+		match foreign_area.powerup_type:
+			PowerUp.POWERUP_TYPE.MULTIBALL:
+				on_multiball()
+			PowerUp.POWERUP_TYPE.EXTRALIFE:
+				on_extralife()
+		foreign_area.queue_free()
+
+func on_multiball() -> void:
+	multiball.emit()
+
+func on_extralife() -> void:
+	extralife.emit()

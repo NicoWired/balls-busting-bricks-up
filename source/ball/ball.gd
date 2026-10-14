@@ -15,6 +15,7 @@ var collision: KinematicCollision2D
 var on_hold: bool = true
 var hold_position: Marker2D
 var collision_counter: int = 0
+var dead: bool = false
 
 func _ready() -> void:
 	velocity = Vector2.from_angle(STARTING_ANGLE) * SPEED
