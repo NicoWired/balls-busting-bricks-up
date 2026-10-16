@@ -46,7 +46,7 @@ func _process(_delta: float) -> void:
 
 func start_level() -> void:
 	current_level += 1
-	board.setup_board()
+	board.setup_board(current_level)
 	hud.set_life(life)
 	hud.set_score(score)
 
@@ -78,5 +78,3 @@ func game_over() -> void:
 	score = 0
 	current_level = 0
 	announcements.game_over()
-
-# level up resets lives

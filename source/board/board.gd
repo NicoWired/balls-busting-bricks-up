@@ -9,9 +9,11 @@ signal score_increase
 const BRICK_LAYOUT: Vector2i = Vector2i(10,6)
 const BRICK_Y_OFFSET: int = 32
 const PADDLE_START_POS: Vector2i = Vector2i(80, 260)
+const POWERUP_CHANCE: float = 0.2
 
 var paddle: Paddle
 var ball: Ball
+var current_level: int
 
 @onready var bricks: Node2D = $Bricks
 @onready var balls: Node2D = $Balls
@@ -26,7 +28,8 @@ func _ready() -> void:
 	setup_death()
 
 #region setup
-func setup_board():
+func setup_board(level: int):
+	current_level = level
 	setup_bricks()
 	setup_paddle()
 	setup_ball()
@@ -60,6 +63,8 @@ func setup_bricks() -> void:
 
 func setup_paddle() -> void:
 	paddle.position = PADDLE_START_POS
+	paddle.level = current_level
+	paddle.change_paddle_size()
 	paddle.extralife.connect(func(): life_gained.emit())
 	paddle.multiball.connect(func(): multiball(false))
 
@@ -87,6 +92,7 @@ func setup_ball(on_hold: bool = true) -> void:
 func config_ball(new_ball: Ball, on_hold: bool) -> void:
 	new_ball.global_position = paddle.ball_spawn.global_position
 	new_ball.hold_position = paddle.ball_spawn
+	new_ball.level = current_level
 	new_ball.on_hold = on_hold
 	balls.call_deferred("add_child", new_ball)
 
@@ -108,9 +114,10 @@ func space_pressed() -> void:
 		ball.on_hold = false
 
 func _on_brick_hit(hit_brick: Brick) -> void:
-	var powerup: PowerUp = preload("res://source/Powerups/Powerup.tscn").instantiate()
-	powerup.global_position = hit_brick.global_position
-	power_ups.add_child(powerup)
+	if randf() < POWERUP_CHANCE:
+		var powerup: PowerUp = preload("res://source/Powerups/Powerup.tscn").instantiate()
+		powerup.global_position = hit_brick.global_position
+		power_ups.add_child(powerup)
 	
 	score_increase.emit(hit_brick.points)
 	

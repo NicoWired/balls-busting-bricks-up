@@ -4,6 +4,7 @@ extends CharacterBody2D
 const HEIGHT: int = 6
 const WIDTH: int = 6
 const SPEED: int = 120
+const LEVEL_SPEED_INCREASE: int = 15
 const STARTING_ANGLE: float = deg_to_rad(315)
 const MIN_Y_ANGLE: float = deg_to_rad(20)
 const PADDLE_X_FACTOR: float = 0.3
@@ -16,9 +17,10 @@ var on_hold: bool = true
 var hold_position: Marker2D
 var collision_counter: int = 0
 var dead: bool = false
+var level: int = 1
 
 func _ready() -> void:
-	velocity = Vector2.from_angle(STARTING_ANGLE) * SPEED
+	velocity = Vector2.from_angle(STARTING_ANGLE) * (SPEED + LEVEL_SPEED_INCREASE * level)
 
 func _physics_process(delta: float) -> void:
 	if on_hold:

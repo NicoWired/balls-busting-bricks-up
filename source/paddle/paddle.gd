@@ -8,7 +8,10 @@ const SIDE_X: int = 4
 const MID_X: int = 8
 const HEIGHT: int = 6
 const SPEED: int = 200
-const BALL_Y_OFFSET = -6
+const BALL_Y_OFFSET: int = -6
+const BASE_PADDLE_SIZE: int = 5
+
+var level: int = 1
 
 @onready var paddle_left: Sprite2D = $PaddleLeft
 @onready var paddle_mid: Sprite2D = $PaddleMid
@@ -22,7 +25,8 @@ const BALL_Y_OFFSET = -6
 
 
 func _ready() -> void:
-	change_paddle_size(3)
+	area.area_entered.connect(_on_area_enterd)
+	change_paddle_size()
 
 func _physics_process(_delta: float) -> void:
 	if Input.is_action_pressed("left"):
@@ -45,7 +49,7 @@ func align_paddle() -> void:
 	@warning_ignore("narrowing_conversion")
 	var half_mid_paddle: int = (MID_X * paddle_mid.scale.x) / 2
 	paddle_left.position.x = (SIDE_X + half_mid_paddle) * -1
-	paddle_mid.position.x = (half_mid_paddle) * -1
+	paddle_mid.position.x = half_mid_paddle * -1
 	paddle_right.position.x = half_mid_paddle
 	
 	# update the cntral collider to match the paddle
@@ -62,7 +66,7 @@ func align_paddle() -> void:
 	left_collision.shape = left_collider
 	@warning_ignore("integer_division")
 	left_collision.position.y = HEIGHT / 2
-	left_collision.position.x -= central_collider.size.x / 2
+	left_collision.position.x = (central_collider.size.x / 2) * -1
 	
 	# yes, this and the block above should be a function
 	var right_collider: CircleShape2D = CircleShape2D.new()
@@ -71,20 +75,24 @@ func align_paddle() -> void:
 	right_collision.shape = right_collider
 	@warning_ignore("integer_division")
 	right_collision.position.y = HEIGHT / 2
-	right_collision.position.x += central_collider.size.x / 2
+	right_collision.position.x = central_collider.size.x / 2
 	
 	# update the ball spawn marker
 	ball_spawn.position.y = BALL_Y_OFFSET
 	ball_spawn.position.x = (paddle_right.position.x + SIDE_X) / 2
 
 
-func change_paddle_size(factor: int) -> void:
+func change_paddle_size() -> void:
+	var factor: int = BASE_PADDLE_SIZE - level
+	if factor < 1:
+		factor = 1
 	paddle_mid.scale.x = factor
 	align_paddle()
 	setup_area()
 
 func setup_area() -> void:
-	area.area_entered.connect(_on_area_enterd)
+	for child in area.get_children():
+		child.queue_free()
 	area.add_child(right_collision.duplicate())
 	area.add_child(central_collision.duplicate())
 	area.add_child(left_collision.duplicate())
@@ -92,9 +100,9 @@ func setup_area() -> void:
 func _on_area_enterd(foreign_area) -> void:
 	if foreign_area is PowerUp:
 		match foreign_area.powerup_type:
-			PowerUp.POWERUP_TYPE.MULTIBALL:
+			PowerUp.MULTIBALL:
 				on_multiball()
-			PowerUp.POWERUP_TYPE.EXTRALIFE:
+			PowerUp.EXTRALIFE:
 				on_extralife()
 		foreign_area.queue_free()
 

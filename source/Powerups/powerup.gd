@@ -4,12 +4,17 @@ extends Area2D
 const SPEED: float = 100
 const ALPHA_TWEEN_SPEED: float = 0.5
 
-enum POWERUP_TYPE {
+enum {
 	MULTIBALL,
 	EXTRALIFE
 }
 
-var powerup_type: POWERUP_TYPE = randi_range(0, POWERUP_TYPE.size() - 1) as POWERUP_TYPE
+var powerup_types: Array[Dictionary] = [
+	{"id": MULTIBALL, "weight": 3},
+	{"id": EXTRALIFE, "weight": 1}
+]
+
+var powerup_type: int = _pick_powerup()
 
 @onready var sprite: Sprite2D = $Sprite
 
@@ -23,3 +28,17 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	position.y += SPEED * delta
+
+func _pick_powerup() -> int:
+	var total: int = 0
+	for powerup in powerup_types:
+		total += powerup["weight"]
+	
+	var choice: int = randi_range(1, total)
+	var counter: int = 0
+	for powerup in powerup_types:
+		counter += powerup["weight"]
+		if counter >= choice:
+			return powerup["id"]
+	
+	return -1
