@@ -14,12 +14,19 @@ var powerup_types: Array[Dictionary] = [
 	{"id": EXTRALIFE, "weight": 1}
 ]
 
+var textures: Dictionary = {
+	MULTIBALL: preload("res://assets/powerups/multiball.png"),
+	EXTRALIFE: preload("res://assets/powerups/extralife.png")
+}
+
 var powerup_type: int = _pick_powerup()
 
 @onready var sprite: Sprite2D = $Sprite
 
 
 func _ready() -> void:
+	sprite.texture = textures[powerup_type]
+	
 	var alpha_tween: Tween = create_tween()
 	alpha_tween.set_loops()
 	alpha_tween.tween_property(sprite, "modulate", Color(1,1,1,0), ALPHA_TWEEN_SPEED)

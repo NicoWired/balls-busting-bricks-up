@@ -15,6 +15,10 @@ run/main_scene="uid://cppj052bttwhw"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Console="*uid://ouiu5xh1cs8n"
+
 [display]
 
 window/size/viewport_width=160
@@ -24,6 +28,10 @@ window/size/window_height_override=1136
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 window/handheld/orientation=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/console/plugin.cfg")
 
 [gui]
 
