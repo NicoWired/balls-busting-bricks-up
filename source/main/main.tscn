@@ -1,7 +1,11 @@
 [gd_scene format=3 uid="uid://cppj052bttwhw"]
 
 [ext_resource type="Script" uid="uid://60ku80t1a512" path="res://source/main/main.gd" id="1_nevys"]
+[ext_resource type="PackedScene" uid="uid://cyvnp3gbubiu8" path="res://source/Menu/menu.tscn" id="2_n3iyj"]
 
 [node name="Main" type="Node" unique_id=248797030]
 process_mode = 3
 script = ExtResource("1_nevys")
+
+[node name="Menu" parent="." unique_id=1881418897 instance=ExtResource("2_n3iyj")]
+visible = false

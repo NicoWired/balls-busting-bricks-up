@@ -12,7 +12,6 @@ const PADDLE_START_POS: Vector2i = Vector2i(80, 260)
 const POWERUP_CHANCE: float = 0.2
 
 var paddle: Paddle
-var ball: Ball
 var current_level: int
 
 @onready var bricks: Node2D = $Bricks
@@ -86,7 +85,7 @@ func setup_walls() -> void:
 func setup_ball(on_hold: bool = true) -> void:
 	for child in balls.get_children():
 		child.queue_free()
-	ball = preload("res://source/ball/Ball.tscn").instantiate()
+	var ball: Ball = preload("res://source/ball/Ball.tscn").instantiate()
 	config_ball(ball, on_hold)
 	
 func config_ball(new_ball: Ball, on_hold: bool) -> void:
@@ -100,7 +99,6 @@ func setup_death() -> void:
 	death_area.body_entered.connect(_on_death_area_entered)
 
 func reset_ball() -> void:
-	ball.queue_free()
 	call_deferred("setup_paddle")
 	call_deferred("setup_ball")
 #endregion setuph
@@ -110,8 +108,9 @@ func multiball(on_hold: bool = true) -> void:
 	config_ball(new_ball, on_hold)
 
 func space_pressed() -> void:
-	if ball.on_hold:
-		ball.on_hold = false
+	for ball: Ball in balls.get_children():
+		if ball.on_hold:
+			ball.on_hold = false
 
 func _on_brick_hit(hit_brick: Brick) -> void:
 	if randf() < POWERUP_CHANCE:

@@ -18,7 +18,6 @@ var score: int = 0:
 
 @onready var board: Board = $Board
 @onready var hud: HUD = $HUD
-@onready var menu: CanvasLayer = $Menu
 @onready var announcements: Announcements = $Announcements
 
 

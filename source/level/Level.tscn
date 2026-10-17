@@ -15,5 +15,3 @@ process_mode = 1
 
 [node name="Announcements" parent="." unique_id=105652722 instance=ExtResource("3_v01u8")]
 visible = false
-
-[node name="Menu" type="CanvasLayer" parent="." unique_id=181925971]
